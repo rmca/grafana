@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/spectrum.css">
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/hg-extra.css">
     <!-- load the root require context -->
     <script src="vendor/require/require.js"></script>
     <script src="app/components/require.config.js"></script>
@@ -35,7 +36,7 @@
     <div class="navbar navbar-static-top">
       <div class="navbar-inner">
         <div class="container-fluid">
-          <span class="brand"><img src="img/small.png" bs-tooltip="'Grafana'" data-placement="bottom"> {{dashboard.current.title}}</span>
+          <span class="brand"><a href="/"><img style="margin-right:10px;" src="img/hg_logo.png" bs-tooltip="'Hosted Grafana'" data-placement="bottom"></a> {{dashboard.current.title}}</span>
           <ul class="nav pull-right" ng-controller='dashLoader' ng-init="init()" ng-include="'app/partials/dashLoader.html'">
           </ul>
         </div>

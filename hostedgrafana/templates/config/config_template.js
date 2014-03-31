@@ -30,10 +30,11 @@ function (Settings) {
      *  datasources: {
      *    data_center_us: { type: 'graphite',  url: 'http://<graphite_url>',  default: true },
      *    data_center_eu: { type: 'graphite',  url: 'http://<graphite_url>' }
+     *    data_center_eu: { type: 'graphite',  url: 'http://<graphite_url>' }
      *  }
      */
 
-    default_route: '/defaults/default.json',
+    default_route: '/dashboard/hg/default',
 
     /**
      * If your graphite server has another timezone than you & users browsers specify the offset here

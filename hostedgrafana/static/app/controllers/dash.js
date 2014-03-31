@@ -49,6 +49,7 @@ function (angular, $, config, _) {
 
 
     $scope.init = function() {
+        console.log("Controller init");
       $scope.config = config;
       // Make stuff, including underscore.js available to views
       $scope._ = _;

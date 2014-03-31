@@ -5,7 +5,7 @@ require.config({
   baseUrl: 'app',
   urlArgs: "bust=" + (new Date()).getTime(),
   paths: {
-    config:                   ['/config/config'],
+    config:                   ['/grafana/config/config'],
     settings:                 'components/settings',
     kbn:                      'components/kbn',
 

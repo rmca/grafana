@@ -61,7 +61,9 @@ angular.module('hostedgraphite.service', [])
       },
       post: function (path, data, successcb, errorcb) {
         path = config.server + path;
+          console.log("Posting to :'"+path+"'");
         var reqConfig = {url: path, data: data, method: 'POST'};
+        console.log(reqConfig);
         return promiseThen($http(angular.extend(reqConfig, config)), successcb, errorcb);
       },
       get: function (path, data, successcb, errorcb) {

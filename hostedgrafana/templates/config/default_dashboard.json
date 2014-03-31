@@ -1,5 +1,5 @@
 {
-  "title": "FLANGE BUCKET",
+  "title": "Default Dashboard",
   "services": {
     "filter": {
       "list": [],
@@ -16,7 +16,73 @@
       "editable": true,
       "collapse": false,
       "collapsable": true,
-      "panels": [],
+      "panels": [
+        {
+          "span": 12,
+          "editable": true,
+          "type": "graphite",
+          "loadingEditor": false,
+          "datasource": null,
+          "renderer": "flot",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_formats": [
+            "short",
+            "short"
+          ],
+          "grid": {
+            "max": null,
+            "min": 0,
+            "threshold1": null,
+            "threshold2": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "annotate": {
+            "enable": false
+          },
+          "resolution": 100,
+          "lines": true,
+          "fill": 0,
+          "linewidth": 1,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "legend": {
+            "show": true,
+            "values": false,
+            "min": false,
+            "max": false,
+            "current": false,
+            "total": false,
+            "avg": false
+          },
+          "percentage": false,
+          "zerofill": true,
+          "nullPointMode": "connected",
+          "steppedLine": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "targets": [
+            {
+              "target": "randomWalk('randomWalk3')"
+            },
+            {
+              "target": "randomWalk('randomWalk2')"
+            },
+            {
+              "target": "randomWalk('randomWalk1')"
+            }
+          ],
+          "aliasColors": {},
+          "aliasYAxis": {},
+          "title": "A Starter Graph"
+        }
+      ],
       "notice": false
     }
   ],
@@ -29,6 +95,10 @@
       "type": "filtering",
       "collapse": false,
       "notice": false,
+      "enable": false
+    },
+    {
+      "type": "annotations",
       "enable": false
     }
   ],
@@ -71,9 +141,9 @@
     "save_hostedgraphite": true,
     "load_hostedgraphite": true,
     "save_local": true,
-    "save_default": true,
-    "save_temp": true,
-    "save_temp_ttl_enable": true,
+    "save_default": false,
+    "save_temp": false,
+    "save_temp_ttl_enable": false,
     "save_temp_ttl": "30d",
     "load_gist": false,
     "load_elasticsearch": false,
@@ -81,5 +151,7 @@
     "load_local": false,
     "hide": false
   },
-  "refresh": false
+  "refresh": false,
+  "tags": [],
+  "timezone": "browser"
 }

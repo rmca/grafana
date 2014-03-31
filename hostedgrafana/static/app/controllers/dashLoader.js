@@ -66,16 +66,18 @@ function (angular, _, moment) {
     };
 
 
-    $scope.hostedgraphite_save = function(type,ttl) {
+    $scope.hostedgraphite_save = function(type, ttl) {
 
       dashboard.hostedgraphite_save(
         type,
         ($scope.hostedgraphite.title || dashboard.current.title),
         ($scope.loader.save_temp_ttl_enable ? ttl : false)
+
       ).then(function(result) {
           alertSrv.set('Save failed','Dashboard could not be saved to Hosted Graphite','error',5000);
 
         if(_.isUndefined(result._id)) {
+            console.log("ER HERE");
           alertSrv.set('Save failed','Dashboard could not be saved to Hosted Graphite','error',5000);
           return;
         }

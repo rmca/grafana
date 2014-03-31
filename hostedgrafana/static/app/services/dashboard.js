@@ -71,11 +71,13 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
     });
 
     var route = function() {
+
       // Is there a dashboard type and id in the URL?
       if(!(_.isUndefined($routeParams.kbnType)) && !(_.isUndefined($routeParams.kbnId))) {
         var _type = $routeParams.kbnType;
         var _id = $routeParams.kbnId;
 
+        console.log("TYPE: '"+_type+"', '"+_id+"'");
         switch(_type) {
         case ('elasticsearch'):
           self.elasticsearch_load('dashboard',_id);
@@ -86,6 +88,9 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
         case ('file'):
           self.file_load(_id);
           break;
+        case('hg'):
+           self.file_load(_id);
+           break;
         case('script'):
           self.script_load(_id);
           break;
@@ -93,10 +98,12 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
           self.local_load();
           break;
         default:
-          $location.path(config.default_route);
+            console.log("Route default");
+            $location.path(config.default_route);
         }
       // No dashboard in the URL
       } else {
+          console.log("Route storage");
         // Check if browser supports localstorage, and if there's an old dashboard. If there is,
         // inform the user that they should save their dashboard to Elasticsearch and then set that
         // as their default
@@ -108,6 +115,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
           } else if(!(_.isUndefined(window.localStorage.grafanaDashboardDefault))) {
             $location.path(window.localStorage.grafanaDashboardDefault);
           } else {
+              console.log("Back to default");
             $location.path(config.default_route);
           }
         // No? Ok, grab the default route, its all we have now
@@ -254,6 +262,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
       } catch(e) {
         _r = false;
       }
+        console.log(_r);
       return _r;
     };
 
@@ -368,13 +377,21 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
       }
 
       // Implement this in hosted graphite service.
-      var request = {doIndex:function(){alert("Mock save")}};
-      return request.doIndex(
+      var request = hostedgraphite.Dashboard(
+         title,
+         "TEST_DATA"
+      );
+
+      console.log("Request");
+      console.log(request);
+      return request.saveDashboard(
         // Success
         function(result) {
+            console.log("Type");
           if(type === 'dashboard') {
             $location.path('/hg/dashboard/save/'+title);
           }
+
           return result;
         },
         // Failure
