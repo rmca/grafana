@@ -77,6 +77,18 @@ function (_) {
   });
 
   addFuncDef({
+     name: 'maxSeries',
+     shortName: 'max',
+     category: categories.Combine
+   });
+
+   addFuncDef({
+     name: 'minSeries',
+     shortName: 'min',
+     category: categories.Combine
+   });
+
+  addFuncDef({
     name: 'sumSeriesWithWildcards',
     category: categories.Combine,
     params: [ { name: "node", type: "int" } ],
@@ -89,6 +101,8 @@ function (_) {
     params: [ { name: "node", type: "int" } ],
     defaultParams: [3]
   });
+
+
 
   addFuncDef({
     name: "alias",
@@ -145,6 +159,16 @@ function (_) {
   });
 
   addFuncDef({
+     name: 'sortByMaxima',
+     category: categories.Special
+   });
+
+   addFuncDef({
+     name: 'sortByMinima',
+     category: categories.Special
+   });
+
+  addFuncDef({
     name: 'aliasByMetric',
     category: categories.Special,
   });
@@ -190,6 +214,14 @@ function (_) {
     category: categories.Transform,
     params: [ { name: "amount", type: "int", } ],
     defaultParams: [10]
+  });
+
+
+  addFuncDef({
+     name: 'transformNull',
+     category: categories.Transform,
+     params: [ { name: "amount", type: "int", } ],
+     defaultParams: [0]
   });
 
   addFuncDef({
@@ -272,6 +304,20 @@ function (_) {
   });
 
   addFuncDef({
+     name: 'limit',
+     category: categories.Filter,
+     params: [ { name: "n", type: "int" } ],
+     defaultParams: [5]
+   });
+
+   addFuncDef({
+     name: 'mostDeviant',
+     category: categories.Filter,
+     params: [ { name: "n", type: "int" } ],
+     defaultParams: [10]
+   });
+
+  addFuncDef({
     name: "exclude",
     category: categories.Filter,
     params: [ { name: "exclude", type: 'string' } ],
@@ -305,6 +351,20 @@ function (_) {
     params: [ { name: "window size", type: "int" } ],
     defaultParams: [10]
   });
+
+  addFuncDef({
+     name: 'movingMedian',
+     category: categories.Filter,
+     params: [ { name: "windowSize", type: "select", options: ['1min', '5min', '15min', '30min', '1hour'] } ],
+     defaultParams: ['1min']
+   });
+
+   addFuncDef({
+     name: 'stdev',
+     category: categories.Filter,
+    params: [ { name: "n", type: "int" }, { name: "tolerance", type: "int" } ],
+     defaultParams: [5,0.1]
+   });
 
   addFuncDef({
     name: 'highestAverage',
