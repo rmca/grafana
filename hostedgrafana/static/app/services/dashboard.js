@@ -363,10 +363,9 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
     };
 
 
-    this.hostedgraphite_save = function(type,title,ttl) {
+    this.hostedgraphite_save = function(type, title, uuid, ttl) {
 
-      console.log("HG SAVE");
-      // TODO - DC - DO THIS
+      console.log("HG SAVE with :'"+uuid+"'");
       // Clone object so we can modify it without influencing the existing obejct
       var save = _.clone(self.current);
       var id;
@@ -378,19 +377,26 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
 
       // Implement this in hosted graphite service.
       var request = hostedgraphite.Dashboard(
+         uuid,
          title,
-         "TEST_DATA"
+         angular.toJson(save,false)
       );
 
       console.log("Request");
-      console.log(request);
+
       return request.saveDashboard(
         // Success
         function(result) {
-            console.log("Type");
-          if(type === 'dashboard') {
-            $location.path('/hg/dashboard/save/'+title);
-          }
+
+          //console.log("Saved: '"+result.uuid+"'");
+          //console.log("result: '"+result+"'");
+          //console.log(self.current);
+          self.current.uuid = result.uuid
+
+          //if(type === 'dashboard') {
+
+            //$location.path('/hg/dashboard/save/'+title);
+          //}
 
           return result;
         },

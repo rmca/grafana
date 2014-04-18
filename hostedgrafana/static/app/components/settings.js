@@ -53,6 +53,7 @@ function (_, crypto) {
       settings.datasources = {
         graphite: {
           type: 'graphite',
+          displayValue : "Graph",
           url: options.graphiteUrl,
           default: true
         }

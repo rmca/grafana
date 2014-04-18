@@ -16,15 +16,21 @@
     console.log("H2, hg: '"+hostedgraphite+"'");
     console.log(hostedgraphite);
 
-    hostedgraphite.Dashboard = function (title, data) {
+    hostedgraphite.Dashboard = function (uuid, title, data) {
         return {
           saveDashboard : function(successcb, errorcb) {
 
-              console.log("HG.client: '"+hostedgraphite.client+"'");
-              var titleSend = title.split(' ').join('+');
-              var url = "/grafana/hg/dashboard/save/" + titleSend + "/";
+              console.log("Saving with uuid: '"+uuid+"'");
+              if(_.isUndefined(uuid)) {
+                uuid = null;
+              }
 
-              var response = hostedgraphite.client.post(url, data, successcb, errorcb);
+              var postData = {"uuid": uuid, "title": title, "data" : data};
+              var titleSend = title.split(' ').join('+');
+              var url = "/grafana/hg/dashboard/save/";
+
+
+              var response = hostedgraphite.client.post(url, postData, successcb, errorcb);
               console.log("Response: '"+response+"'");
               console.log(response);
               return response;

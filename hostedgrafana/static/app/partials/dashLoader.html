@@ -34,7 +34,7 @@
     <li ng-show="dashboard.current.loader.save_hostedgraphite">
       <form class="input-prepend nomargin save-dashboard-dropdown-save-form">
         <input class='input-medium' ng-model="dashboard.current.title" type="text" ng-model="hostedgraphite.title"/>
-        <button class="btn" ng-click="hostedgraphite_save('dashboard')"><i class="icon-save"></i></button>
+        <button class="btn" ng-click="hostedgraphite_save('dashboard', dashboard.current.loader.uuid)"><i class="icon-save"></i></button>
       </form>
     </li>
 

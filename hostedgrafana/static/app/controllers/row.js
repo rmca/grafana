@@ -122,7 +122,9 @@ function (angular, app, _) {
          * type:: The type of panel this object contains. Each panel type will require additional
          * properties. See the panel types list to the right.
          */
-        type    : type
+        type    : type,
+
+        displayValue : ""
       };
     };
 

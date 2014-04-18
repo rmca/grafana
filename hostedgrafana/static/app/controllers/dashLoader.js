@@ -71,18 +71,21 @@ function (angular, _, moment) {
       dashboard.hostedgraphite_save(
         type,
         ($scope.hostedgraphite.title || dashboard.current.title),
+        dashboard.current.uuid,
         ($scope.loader.save_temp_ttl_enable ? ttl : false)
 
       ).then(function(result) {
           alertSrv.set('Save failed','Dashboard could not be saved to Hosted Graphite','error',5000);
 
         if(_.isUndefined(result._id)) {
-            console.log("ER HERE");
+
           alertSrv.set('Save failed','Dashboard could not be saved to Hosted Graphite','error',5000);
           return;
         }
 
-        alertSrv.set('Dashboard Saved', 'This dashboard has been saved to Hosted Graphite as "' + result._id + '"','success', 5000);
+        alertSrv.set('Dashboard Saved', 'This dashboard has been saved to Hosted Graphite as "' + result._id + '", uuid: "'+result.uuid+'"','success', 5000);
+        dashboard.current.uuid = result.uuid;
+
         if(type === 'temp') {
           $scope.share = dashboard.share_link(dashboard.current.title,'temp',result._id);
         }

@@ -2,10 +2,10 @@
   <div class="pull-right editor-title">Dashboard settings</div>
 
   <div ng-model="editor.index" bs-tabs style="text-transform:capitalize;">
-    <div ng-repeat="tab in ['General', 'Rows', 'Metrics', 'Import']" data-title="{{tab}}">
+    <div ng-repeat="tab in ['General', 'Rows', 'Import']" data-title="{{tab}}">
     </div>
-    <div ng-repeat="tab in dashboard.current.nav" data-title="{{tab.type}}">
-    </div>
+    <!--Hide timepicker options<div ng-repeat="tab in dashboard.current.nav" data-title="{{tab.type}}">
+    </div>-->
   </div>
 
   <div ng-if="editor.index == 0">
@@ -20,23 +20,6 @@
         <div class="editor-option">
           <label class="small">Time correction</label>
           <select ng-model="dashboard.current.timezone" class='input-small' ng-options="f for f in ['browser','utc']"></select>
-        </div>
-        <div class="editor-option">
-          <label class="small"> Hints <tip>Show 'Add panel' hints in empty spaces</tip></label><input type="checkbox" ng-model="dashboard.current.panel_hints" ng-checked="dashboard.current.panel_hints" />
-        </div>
-        <div class="editor-option">
-          <label class="small">Hide controls</label>
-          <input type="checkbox" ng-model="dashboard.current.hideControls" ng-checked="dashboard.current.hideControls">
-        </div>
-      </div>
-    </div>
-     <div class="editor-row">
-      <div class="section">
-        <div class="editor-option">
-          <label class="small">Tags</label>
-          <bootstrap-tagsinput ng-model="dashboard.current.tags" tagclass="label label-tag" placeholder="add tags">
-          </bootstrap-tagsinput>
-          <tip>Press enter to a add tag</tip>
         </div>
       </div>
     </div>
@@ -73,10 +56,6 @@
 
 
   <div ng-if="editor.index == 2">
-    <ng-include src="'app/partials/loadmetrics.html'"></ng-include>
-  </div>
-
-  <div ng-if="editor.index == 3">
     <ng-include src="'app/partials/import.html'"></ng-include>
   </div>
 
@@ -88,11 +67,6 @@
 </div>
 
 <div class="modal-footer">
-  <div class="pull-left" style="padding-top: 15px;" ng-if="editor.index == 0">
-
-    (<a class="small" href="https://github.com/torkelo/grafana/releases" target="_blank">check for updates</a>)
-  </div>
-
   <button ng-click="add_row(dashboard.current,row); reset_row();" class="btn btn-success" ng-show="editor.index == 1">Create Row</button>
   <button type="button" class="btn btn-info" ng-click="editor.index=0;dismiss();reset_panel();dashboard.refresh()">Close</button>
 </div>

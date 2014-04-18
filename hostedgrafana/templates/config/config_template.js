@@ -45,7 +45,8 @@ function (Settings) {
     grafana_index: "grafana-dash",
 
     panel_names: [
-      'graphite'
+        {type:'graphite', displayValue:'Graph'}
+
     ]
   });
 });
