@@ -9,5 +9,7 @@ define([
   './graphiteTarget',
   './graphiteImport',
   './influxTargetCtrl',
-  './playlistCtrl'
+  './playlistCtrl',
+  '../../vendor/hostedgraphite/controllers/hg_dashboard_loader'
+
 ], function () {});

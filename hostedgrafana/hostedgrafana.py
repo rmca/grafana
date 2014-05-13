@@ -14,15 +14,18 @@ def index():
 
 
 
+
+def getUserUID(request):
+
+    try:
+        return request.headers['Hg-Uid']
+    except KeyError:
+        return None
+
 @app.route('/config/config.js')
 def get_grafana_config():
 
-    print request.headers
-    if 'Hg-Access-Key' in request.headers:
-        print "GOT KEY: '%s'" % request.headers['Hg-Access-Key']
-
-    access_key_url = "http://localhost:8000/5de74f77/6d258424-85f1-412f-8337-428973ad1f25/graphite"
-    response = make_response(render_template("config/config_template.js", access_key_url=access_key_url))
+    response = make_response(render_template("config/config_template.js", uid=getUserUID(request)))
     response.headers['Content-Type'] = 'application/javascript'
     return response
 

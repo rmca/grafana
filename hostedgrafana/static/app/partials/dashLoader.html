@@ -67,10 +67,14 @@
   </ul>
 </li>
 
-<li class="dropdown grafana-menu-load" ng-show="showDropdown('load')" ng-controller="SearchCtrl" ng-init="init()" ng-include="'app/partials/search.html'">
+
+<!--<li class="dropdown grafana-menu-load" ng-show="showDropdown('load')" ng-controller="SearchCtrl" ng-init="init()" ng-include="'app/partials/search.html'">
+
+</li>-->
+
+<li class="dropdown grafana-menu-load" ng-show="showDropdown('load')" ng-controller="HG_dash_loader" ng-init="init()" ng-include="'vendor/hostedgraphite/partials/hg_dash_load.html'">
 
 </li>
-
 
 <li class="grafana-menu-home"><a bs-tooltip="'Goto saved default'" data-placement="bottom" href='#/dashboard'><i class='icon-home'></i></a></li>
 

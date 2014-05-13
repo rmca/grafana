@@ -90,6 +90,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
           break;
         case('hg'):
            self.file_load(_id);
+            //self.hostedgraphite_load(_id);
            break;
         case('script'):
           self.script_load(_id);
@@ -310,6 +311,16 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
       });
     };
 
+
+    this.hostedgraphite_load = function(type, id) {
+        // TODO - DC - MAKE SHIT HAPPEN
+        // Next steps - API endpoints
+        // 1) to list graphs return name, slug and uuid
+        // 2) To retrieve a graph by uuid
+        // 3) To delete a graph
+    };
+
+
     this.elasticsearch_load = function(type,id) {
       var options = {
         url: config.elasticsearch + "/" + config.grafana_index + "/"+type+"/"+id+'?' + new Date().getTime(),
@@ -340,6 +351,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
     };
 
     this.script_load = function(file) {
+        console.log("Script load url: '"+"app/dashboards/"+file.replace(/\.(?!js)/,"/"+"'"));
       return $http({
         url: "app/dashboards/"+file.replace(/\.(?!js)/,"/"),
         method: "GET",
