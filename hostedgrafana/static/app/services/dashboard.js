@@ -52,7 +52,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
 
     // An elasticJS client to use
     var ejs = ejsResource(config.elasticsearch, config.elasticsearchBasicAuth);
-    var hostedgraphite = hostedGraphiteResource(config.hostedgraphite);
+    var hostedgraphite = hostedGraphiteResource({"server":config.datasources.graphite.url});
     var gist_pattern = /(^\d{5,}$)|(^[a-z0-9]{10,}$)|(gist.github.com(\/*.*)\/[a-z0-9]{5,}\/*$)/;
 
     // Store a reference to this
@@ -77,7 +77,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
         var _type = $routeParams.kbnType;
         var _id = $routeParams.kbnId;
 
-        console.log("TYPE: '"+_type+"', '"+_id+"'");
+        console.log("Dashboard TYPE: '"+_type+"', '"+_id+"'");
         switch(_type) {
         case ('elasticsearch'):
           self.elasticsearch_load('dashboard',_id);
@@ -89,8 +89,11 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
           self.file_load(_id);
           break;
         case('hg'):
-           self.file_load(_id);
-            //self.hostedgraphite_load(_id);
+            if(_id == "default") {
+                self.file_load(_id);
+            } else {
+                self.hostedgraphite_load(_id);
+            }
            break;
         case('script'):
           self.script_load(_id);
@@ -312,12 +315,17 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
     };
 
 
-    this.hostedgraphite_load = function(type, id) {
-        // TODO - DC - MAKE SHIT HAPPEN
-        // Next steps - API endpoints
-        // 1) to list graphs return name, slug and uuid
-        // 2) To retrieve a graph by uuid
-        // 3) To delete a graph
+    this.hostedgraphite_load = function(slug) {
+
+        var hg = hostedgraphite.Loader(slug, self.current);
+        hg.loadDashboard(function(result) {
+            self.dash_load(dash_defaults(result));
+            return true;
+
+        }, function(){
+            alertSrv.set('Error',"Could not load Dashboard <i>"+slug+" from Hosted Graphite</i>." ,'error');
+            return false;
+        });
     };
 
 

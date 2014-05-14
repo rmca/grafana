@@ -40,7 +40,7 @@ angular.module('hostedgraphite.service', [])
 
     // set url to empty string if it was not specified
     if (config.server == null) {
-      config.server = '';
+      config.server = config.url;
     }
 
     /* set authentication header

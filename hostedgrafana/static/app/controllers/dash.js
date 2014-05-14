@@ -63,8 +63,6 @@ function (angular, $, config, _) {
 
       $scope.ejs = ejsResource(config.elasticsearch, config.elasticsearchBasicAuth);
 
-      $scope.hostedgraphite = hostedGraphiteResource(config.hostedgraphite);
-
       $scope.bindKeyboardShortcuts();
     };
 

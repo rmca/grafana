@@ -12,11 +12,6 @@ function (angular, _, config, $) {
   module.controller('HG_dash_loader', function($scope, $rootScope, dashboard, $element, $location, datasourceSrv) {
 
 
-    console.log("DATA SOURCE: '"+datasourceSrv+"'");
-      console.log(datasourceSrv);
-      console.log("----DS");
-
-
     $scope.listAllDashboards = function(query) {
       delete $scope.error;
 
@@ -47,7 +42,13 @@ function (angular, _, config, $) {
     };
 
 
+    $scope.select_hg_dashboard = function(dashboardSlug) {
 
+        $location.path("/dashboard/hg/" + encodeURIComponent(dashboardSlug));
+          setTimeout(function(){
+            $('body').click(); // hack to force dropdown to close;
+          });
+    };
 
     $scope.load_hg_dashboard = function(dashboardSlug) {
       delete $scope.error;
@@ -58,14 +59,14 @@ function (angular, _, config, $) {
             throw { message: 'no dashboard state received from graphite' };
           }
 
-          graphiteToGrafanaTranslator(results.data.state);
+          graphiteToGrafanaTranslator(results.data.state, results.data.slug);
         })
         .then(null, function(err) {
           $scope.error = err.message || 'Failed to import dashboard';
         });
     };
 
-    function graphiteToGrafanaTranslator(state) {
+    function graphiteToGrafanaTranslator(state, slug) {
       var graphsPerRow = 2;
       var rowHeight = 300;
       var rowTemplate;
@@ -83,6 +84,7 @@ function (angular, _, config, $) {
       var newDashboard = angular.copy(dashboard.current);
       newDashboard.rows = [];
       newDashboard.title = state.name;
+      newDashboard.slug  = slug;
       newDashboard.rows.push(currentRow);
 
       _.each(state.graphs, function(graph) {

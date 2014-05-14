@@ -11,7 +11,7 @@
 
             <table class="table table-condensed table-striped">
                <tr ng-repeat="dash in dashboards">
-                 <td style="padding-right: 20px;"><button class="btn btn-success" ng-click="load_hg_dashboard(dash.slug)">Load</button>
+                 <td style="padding-right: 20px;"><button class="btn btn-success" ng-click="select_hg_dashboard(dash.slug)">Load</button>
                  <td style="width: 100%; vertical-align: middle;">{{dash.name}}</td>
                </tr>
              </table>
@@ -22,31 +22,8 @@
     </li>
 
     <!-- ng-show="dashboard.current.loader.load_gist || dashboard.current.loader.load_local" -->
-    <li ng-if="showImport" style="margin: 20px;">
-      <div class="editor-row">
-        <div class="section">
-          <div class="editor-option">
-            <h5>Local File <tip>Load dashboard JSON layout from file</tip></h5>
-            <form>
-              <input type="file" id="dashupload" dash-upload /><br>
-            </form>
-          </div>
-        </div>
-      </div>
+    <li><div ng-include="'vendor/hostedgraphite/partials/hg_favourites.html'"></div>
+       PLAYLISTS
 
-      <div class="editor-row" ng-show='dashboard.current.loader.load_gist'>
-        <h5>Gist <tip>Enter a gist number or url</tip></h5>
-        <form>
-          <input type="text" ng-model="gist.url" placeholder="Gist number or URL"><br>
-          <button class="btn" ng-click="gist_dblist(dashboard.gist_id(gist.url))" ng-show="dashboard.is_gist(gist.url)"><i class="icon-github-alt"></i> Get gist:{{gist.url | gistid}}</button>
-          <h6 ng-show="gist.files.length">Dashboards in gist:{{gist.url | gistid}} <small>click to load</small></h6>
-          <h6 ng-hide="gist.files.length || !gist.url.length">No gist dashboards found</h6>
-          <table class="table table-condensed table-striped">
-            <tr ng-repeat="file in gist.files">
-              <td><a ng-click="dashboard.dash_load(file)">{{file.title}}</a></td>
-            </tr>
-          </table>
-        </form>
-      </div>
     </li>
 </ul>
