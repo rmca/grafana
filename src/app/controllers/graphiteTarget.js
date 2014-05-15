@@ -234,7 +234,7 @@ function (angular, _, config, gfunc, Parser) {
       $scope.moveAliasFuncLast();
       $scope.smartlyHandleNewAliasByNode(newFunc);
 
-      if (!funcDef.params && newFunc.added) {
+      if (!newFunc.params.length && newFunc.added) {
         $scope.targetChanged();
       }
     };

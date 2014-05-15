@@ -67,6 +67,14 @@
 </div>
 
 <div class="modal-footer">
+  <div class="pull-left grafana-version-footer" ng-if="editor.index == 0">
+    <span class="editor-option small">
+      Grafana version: {{grafanaVersion}}
+    </span>
+    <div class="small" grafana-version-check>
+    </div>
+  </div>
+
   <button ng-click="add_row(dashboard.current,row); reset_row();" class="btn btn-success" ng-show="editor.index == 1">Create Row</button>
   <button type="button" class="btn btn-info" ng-click="editor.index=0;dismiss();reset_panel();dashboard.refresh()">Close</button>
 </div>
