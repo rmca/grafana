@@ -21,10 +21,10 @@ function (_, crypto) {
         }
       },
       panel_names                   : [],
-      default_route                 : '',
+      default_route                 : '/defaults/default.json',
       grafana_index                 : 'grafana-dash',
       elasticsearch_all_disabled    : false,
-      timezoneOffset                : null,
+      timezoneOffset                : null
     };
 
     // This initializes a new hash on purpose, to avoid adding parameters to
@@ -53,6 +53,7 @@ function (_, crypto) {
       settings.datasources = {
         graphite: {
           type: 'graphite',
+          displayValue : "Graph",
           url: options.graphiteUrl,
           default: true
         }

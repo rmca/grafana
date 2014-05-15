@@ -10,4 +10,6 @@ define([
   './graphiteImport',
   './influxTargetCtrl',
   './playlistCtrl',
+  '../../vendor/hostedgraphite/controllers/hg_dashboard_loader'
+
 ], function () {});
