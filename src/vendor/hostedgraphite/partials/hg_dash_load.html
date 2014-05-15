@@ -1,0 +1,29 @@
+<a href="#" bs-tooltip="'Load Dashboard'" data-placement="bottom" ng-click="openHGDashboardList()" class="dropdown-toggle" data-toggle="dropdown">
+    <i class='icon-folder-open'></i>
+  </a>
+
+
+<ul class="dropdown-menu" id="grafana-search">
+    <li ng-if="!showImport" style="width:900px;">
+      <div class="grafana-search-panel">
+        <div class="search-field-wrapper">
+          <span class="position: relative;">
+
+            <table class="table table-condensed table-striped">
+               <tr ng-repeat="dash in dashboards">
+                 <td style="padding-right: 20px;"><button class="btn btn-success" ng-click="select_hg_dashboard(dash.slug)">Load</button>
+                 <td style="width: 100%; vertical-align: middle;">{{dash.name}}</td>
+               </tr>
+             </table>
+          </span>
+        </div>
+
+      </div>
+    </li>
+
+    <!-- ng-show="dashboard.current.loader.load_gist || dashboard.current.loader.load_local" -->
+    <li><div ng-include="'vendor/hostedgraphite/partials/hg_favourites.html'"></div>
+       PLAYLISTS
+
+    </li>
+</ul>

@@ -1,0 +1,32 @@
+<div ng-controller="PlaylistCtrl" ng-init="init()">
+  <div class="modal-header">
+    <h3>Favourites</h3>
+  </div>
+  <div class="modal-body">
+    <div class="editor-row">
+      <div class="section">
+        <div class="editor-option">
+          <table class="table table-striped span8">
+            <tr>
+              <th>Dashboard</th>
+              <th style="white-space: nowrap;">Remove as favorite</th>
+            </tr>
+            <tr ng-repeat="dashboard in favDashboards">
+              <td style="white-space: nowrap;" ng-click="select_hg_dashboard(dashboard.slug)">
+                <a href="#"  onclick="return false;" >{{dashboard.title}}</a>
+              </td>
+              <td style="text-align: center">
+                <i class="icon-remove pointer" ng-click="removeAsFavorite(dashboard)"></i>
+              </td>
+            </tr>
+            <tr ng-hide="favDashboards.length">
+              <td colspan="3">
+                <i class="icon-warning"></i> No dashboards marked as favorites
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+   </div>
+</div>
