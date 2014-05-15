@@ -30,7 +30,7 @@ function (angular, $, config, _) {
   var module = angular.module('kibana.controllers');
 
   module.controller('DashCtrl', function(
-    $scope, $rootScope, $route, ejsResource, hostedGraphiteResource, dashboard, alertSrv, panelMove, keyboardManager, grafanaVersion) {
+    $scope, $rootScope, $route, ejsResource, dashboard, alertSrv, panelMove, keyboardManager, grafanaVersion) {
 
     $scope.requiredElasticSearchVersion = ">=0.90.3";
 
