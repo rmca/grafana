@@ -3,9 +3,9 @@
  */
 require.config({
   baseUrl: 'app',
-  // urlArgs: 'r=@REV@',
+  urlArgs: "bust=" + (new Date()).getTime(),
   paths: {
-    config:                   ['../config', '../config.sample'],
+    config:                   ['/grafana/config/config'],
     settings:                 'components/settings',
     kbn:                      'components/kbn',
 
@@ -45,8 +45,9 @@ require.config({
 
     modernizr:                '../vendor/modernizr-2.6.1',
     elasticjs:                '../vendor/elasticjs/elastic-angular-client',
+    hostedgraphite:           '../vendor/hostedgraphite/hostedgraphite-angular-client',
 
-    'bootstrap-tagsinput':    '../vendor/tagsinput/bootstrap-tagsinput',
+    'bootstrap-tagsinput':    '../vendor/tagsinput/bootstrap-tagsinput'
   },
   shim: {
     underscore: {
@@ -105,6 +106,7 @@ require.config({
     datepicker:             ['jquery', 'bootstrap'],
 
     elasticjs:              ['angular', '../vendor/elasticjs/elastic'],
+    hostedgraphite:         ['angular', '../vendor/hostedgraphite/hostedgraphite'],
 
     'bootstrap-tagsinput':          ['jquery'],
   },
