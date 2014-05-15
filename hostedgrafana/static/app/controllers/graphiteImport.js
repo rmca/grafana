@@ -11,6 +11,7 @@ function (angular, app, _) {
   module.controller('GraphiteImportCtrl', function($scope, $rootScope, $timeout, datasourceSrv, dashboard) {
 
     $scope.init = function() {
+      console.log('hej!');
     };
 
     $scope.listAll = function(query) {
