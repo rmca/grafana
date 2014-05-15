@@ -24,7 +24,8 @@ function (_, crypto) {
       default_route                 : '/defaults/default.json',
       grafana_index                 : 'grafana-dash',
       elasticsearch_all_disabled    : false,
-      timezoneOffset                : null
+      timezoneOffset                : null,
+      unsaved_changes_warning       : true
     };
 
     // This initializes a new hash on purpose, to avoid adding parameters to
@@ -49,6 +50,11 @@ function (_, crypto) {
       return datasource;
     };
 
+    var parseMultipleHosts = function(datasource) {
+      datasource.urls = _.map(datasource.url.split(","), function (url) { return url.trim(); });
+      return datasource;
+    };
+
     if (options.graphiteUrl) {
       settings.datasources = {
         graphite: {
@@ -63,6 +69,7 @@ function (_, crypto) {
     _.each(settings.datasources, function(datasource, key) {
       datasource.name = key;
       parseBasicAuth(datasource);
+      if (datasource.type === 'influxdb') { parseMultipleHosts(datasource); }
     });
 
     var elasticParsed = parseBasicAuth({ url: settings.elasticsearch });

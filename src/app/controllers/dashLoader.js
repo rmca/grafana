@@ -50,7 +50,7 @@ function (angular, _, moment) {
 
     $scope.set_default = function() {
       if(dashboard.set_default($location.path())) {
-        alertSrv.set('Home Set','This page has been set as your default Grafana dashboard','success',5000);
+        alertSrv.set('Home Set','This page has been set as your default dashboard','success',5000);
       } else {
         alertSrv.set('Incompatible Browser','Sorry, your browser is too old for this feature','error',5000);
       }
@@ -58,7 +58,7 @@ function (angular, _, moment) {
 
     $scope.purge_default = function() {
       if(dashboard.purge_default()) {
-        alertSrv.set('Local Default Clear','Your Kibana default dashboard has been reset to the default',
+        alertSrv.set('Local Default Clear','Your default dashboard has been reset to the default',
           'success',5000);
       } else {
         alertSrv.set('Incompatible Browser','Sorry, your browser is too old for this feature','error',5000);
@@ -95,6 +95,7 @@ function (angular, _, moment) {
     };
 
     $scope.elasticsearch_save = function(type,ttl) {
+<<<<<<< HEAD
 
       dashboard.elasticsearch_save(
         type,
@@ -107,14 +108,22 @@ function (angular, _, moment) {
           alertSrv.set('Save failed','Dashboard could not be saved to Elasticsearch','error',5000);
           return;
         }
+=======
+      dashboard.elasticsearch_save(type, dashboard.current.title, ttl)
+        .then(function(result) {
+          if(_.isUndefined(result._id)) {
+            alertSrv.set('Save failed','Dashboard could not be saved to Elasticsearch','error',5000);
+            return;
+          }
+>>>>>>> 2a6a3a3af5236ff1f041d134b2e56bf58e00c822
 
-        alertSrv.set('Dashboard Saved', 'This dashboard has been saved to Elasticsearch as "' + result._id + '"','success', 5000);
-        if(type === 'temp') {
-          $scope.share = dashboard.share_link(dashboard.current.title,'temp',result._id);
-        }
+          alertSrv.set('Dashboard Saved', 'Dashboard has been saved to Elasticsearch as "' + result._id + '"','success', 5000);
+          if(type === 'temp') {
+            $scope.share = dashboard.share_link(dashboard.current.title,'temp',result._id);
+          }
 
-        $rootScope.$emit('dashboard-saved');
-      });
+          $rootScope.$emit('dashboard-saved');
+        });
     };
 
     $scope.elasticsearch_delete = function(id) {

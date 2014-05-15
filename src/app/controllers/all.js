@@ -11,5 +11,5 @@ define([
   './influxTargetCtrl',
   './playlistCtrl',
   '../../vendor/hostedgraphite/controllers/hg_dashboard_loader'
-
+  './inspectCtrl',
 ], function () {});
