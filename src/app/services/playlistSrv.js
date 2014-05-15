@@ -43,7 +43,8 @@ function (angular, _, kbn) {
 
       favorites.dashboards.push({
         url: $location.path(),
-        title: dashboard.current.title
+        title: dashboard.current.title,
+        slug: dashboard.current.slug
       });
 
       this._save();

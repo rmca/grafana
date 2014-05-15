@@ -14,7 +14,8 @@ function (angular, _, moment) {
     $scope.init = function() {
       $scope.gist_pattern = /(^\d{5,}$)|(^[a-z0-9]{10,}$)|(gist.github.com(\/*.*)\/[a-z0-9]{5,}\/*$)/;
       $scope.gist = $scope.gist || {};
-      $scope.elasticsearch = $scope.elasticsearch || {};
+      $scope.elasticsearch  = $scope.elasticsearch || {};
+      $scope.hostedgraphite = $scope.hostedgraphite || {};
 
       $rootScope.$on('save-dashboard', function() {
         $scope.elasticsearch_save('dashboard', false);
@@ -36,10 +37,10 @@ function (angular, _, moment) {
 
       var _l = dashboard.current.loader;
       if(type === 'load') {
-        return (_l.load_elasticsearch || _l.load_gist || _l.load_local);
+        return (_l.load_hostedgraphite || _l.load_elasticsearch || _l.load_gist || _l.load_local);
       }
       if(type === 'save') {
-        return (_l.save_elasticsearch || _l.save_gist || _l.save_local || _l.save_default);
+        return (_l.save_hostedgraphite || _l.save_elasticsearch || _l.save_gist || _l.save_local || _l.save_default);
       }
       if(type === 'share') {
         return (_l.save_temp);
@@ -49,7 +50,7 @@ function (angular, _, moment) {
 
     $scope.set_default = function() {
       if(dashboard.set_default($location.path())) {
-        alertSrv.set('Home Set','This page has been set as your default Kibana dashboard','success',5000);
+        alertSrv.set('Home Set','This page has been set as your default Grafana dashboard','success',5000);
       } else {
         alertSrv.set('Incompatible Browser','Sorry, your browser is too old for this feature','error',5000);
       }
@@ -64,12 +65,44 @@ function (angular, _, moment) {
       }
     };
 
+
+    $scope.hostedgraphite_save = function(type, ttl) {
+
+      dashboard.hostedgraphite_save(
+        type,
+        ($scope.hostedgraphite.title || dashboard.current.title),
+        dashboard.current.uuid,
+        ($scope.loader.save_temp_ttl_enable ? ttl : false)
+
+      ).then(function(result) {
+          alertSrv.set('Save failed','Dashboard could not be saved to Hosted Graphite','error',5000);
+
+        if(_.isUndefined(result._id)) {
+
+          alertSrv.set('Save failed','Dashboard could not be saved to Hosted Graphite','error',5000);
+          return;
+        }
+
+        alertSrv.set('Dashboard Saved', 'This dashboard has been saved to Hosted Graphite as "' + result._id + '", uuid: "'+result.uuid+'"','success', 5000);
+        dashboard.current.uuid = result.uuid;
+
+        if(type === 'temp') {
+          $scope.share = dashboard.share_link(dashboard.current.title,'temp',result._id);
+        }
+
+        $rootScope.$emit('dashboard-saved');
+      });
+    };
+
     $scope.elasticsearch_save = function(type,ttl) {
+
       dashboard.elasticsearch_save(
         type,
         ($scope.elasticsearch.title || dashboard.current.title),
         ($scope.loader.save_temp_ttl_enable ? ttl : false)
       ).then(function(result) {
+          alertSrv.set('Save failed','Dashboard could not be saved to Elasticsearch','error',5000)
+
         if(_.isUndefined(result._id)) {
           alertSrv.set('Save failed','Dashboard could not be saved to Elasticsearch','error',5000);
           return;

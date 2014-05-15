@@ -15,7 +15,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
 
   module.service('dashboard', function(
     $routeParams, $http, $rootScope, $injector, $location, $timeout,
-    ejsResource, timer, alertSrv
+    ejsResource, hostedGraphiteResource, timer, alertSrv
   ) {
     // A hash of defaults to use when loading a dashboard
 
@@ -34,6 +34,8 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
       loader: {
         save_gist: false,
         save_elasticsearch: true,
+        save_hostedgraphite: true,
+        load_hostedgraphite: true,
         save_local: true,
         save_default: true,
         save_temp: true,
@@ -50,6 +52,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
 
     // An elasticJS client to use
     var ejs = ejsResource(config.elasticsearch, config.elasticsearchBasicAuth);
+    var hostedgraphite = hostedGraphiteResource({"server":config.datasources.graphite.url});
     var gist_pattern = /(^\d{5,}$)|(^[a-z0-9]{10,}$)|(gist.github.com(\/*.*)\/[a-z0-9]{5,}\/*$)/;
 
     // Store a reference to this
@@ -68,11 +71,13 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
     });
 
     var route = function() {
+
       // Is there a dashboard type and id in the URL?
       if(!(_.isUndefined($routeParams.kbnType)) && !(_.isUndefined($routeParams.kbnId))) {
         var _type = $routeParams.kbnType;
         var _id = $routeParams.kbnId;
 
+        console.log("Dashboard TYPE: '"+_type+"', '"+_id+"'");
         switch(_type) {
         case ('elasticsearch'):
           self.elasticsearch_load('dashboard',_id);
@@ -83,6 +88,13 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
         case ('file'):
           self.file_load(_id);
           break;
+        case('hg'):
+            if(_id == "default") {
+                self.file_load(_id);
+            } else {
+                self.hostedgraphite_load(_id);
+            }
+           break;
         case('script'):
           self.script_load(_id);
           break;
@@ -90,10 +102,12 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
           self.local_load();
           break;
         default:
-          $location.path(config.default_route);
+            console.log("Route default");
+            $location.path(config.default_route);
         }
       // No dashboard in the URL
       } else {
+          console.log("Route storage");
         // Check if browser supports localstorage, and if there's an old dashboard. If there is,
         // inform the user that they should save their dashboard to Elasticsearch and then set that
         // as their default
@@ -105,6 +119,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
           } else if(!(_.isUndefined(window.localStorage.grafanaDashboardDefault))) {
             $location.path(window.localStorage.grafanaDashboardDefault);
           } else {
+              console.log("Back to default");
             $location.path(config.default_route);
           }
         // No? Ok, grab the default route, its all we have now
@@ -251,6 +266,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
       } catch(e) {
         _r = false;
       }
+        console.log(_r);
       return _r;
     };
 
@@ -298,6 +314,21 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
       });
     };
 
+
+    this.hostedgraphite_load = function(slug) {
+
+        var hg = hostedgraphite.Loader(slug, self.current);
+        hg.loadDashboard(function(result) {
+            self.dash_load(dash_defaults(result));
+            return true;
+
+        }, function(){
+            alertSrv.set('Error',"Could not load Dashboard <i>"+slug+" from Hosted Graphite</i>." ,'error');
+            return false;
+        });
+    };
+
+
     this.elasticsearch_load = function(type,id) {
       var options = {
         url: config.elasticsearch + "/" + config.grafana_index + "/"+type+"/"+id+'?' + new Date().getTime(),
@@ -328,6 +359,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
     };
 
     this.script_load = function(file) {
+        console.log("Script load url: '"+"app/dashboards/"+file.replace(/\.(?!js)/,"/"+"'"));
       return $http({
         url: "app/dashboards/"+file.replace(/\.(?!js)/,"/"),
         method: "GET",
@@ -350,7 +382,56 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
       });
     };
 
+
+    this.hostedgraphite_save = function(type, title, uuid, ttl) {
+
+      console.log("HG SAVE with :'"+uuid+"'");
+      // Clone object so we can modify it without influencing the existing obejct
+      var save = _.clone(self.current);
+      var id;
+
+      // Change title on object clone
+      if (type === 'dashboard') {
+        id = save.title = _.isUndefined(title) ? self.current.title : title;
+      }
+
+      // Implement this in hosted graphite service.
+      var request = hostedgraphite.Dashboard(
+         uuid,
+         title,
+         angular.toJson(save,false)
+      );
+
+      console.log("Request");
+
+      return request.saveDashboard(
+        // Success
+        function(result) {
+
+          //console.log("Saved: '"+result.uuid+"'");
+          //console.log("result: '"+result+"'");
+          //console.log(self.current);
+          self.current.uuid = result.uuid
+
+          //if(type === 'dashboard') {
+
+            //$location.path('/hg/dashboard/save/'+title);
+          //}
+
+          return result;
+        },
+        // Failure
+        function() {
+          return false;
+        }
+      );
+
+
+    };
+
     this.elasticsearch_save = function(type,title,ttl) {
+        alert("SHARTIFY2");
+        console.log("SAVE HERE");
       // Clone object so we can modify it without influencing the existing obejct
       var save = _.clone(self.current);
       var id;
